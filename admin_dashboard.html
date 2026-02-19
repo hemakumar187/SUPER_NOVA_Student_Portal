@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- General --- */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f4f6f8;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 220px;
+            background: #1f2937;
+            height: 100vh;
+            position: fixed;
+            color: #fff;
+            padding-top: 20px;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 15px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+        .sidebar a:hover {
+            background: #374151;
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* --- Main Content --- */
+        .main {
+            margin-left: 220px;
+            padding: 30px;
+        }
+
+        /* --- Sections --- */
+        .section {
+            display: none;
+        }
+
+        .section h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        /* --- Card Design --- */
+        .card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        /* --- Buttons --- */
+        button, .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #3b82f6;
+            color: #fff;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        button:hover, .btn:hover {
+            background: #2563eb;
+        }
+
+        /* --- Forms --- */
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+        }
+
+        /* --- Links inside cards --- */
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Section Active --- */
+        .active-section {
+            display: block !important;
+        }
+
+        /* --- Responsive --- */
+        @media(max-width: 768px){
+            .sidebar {width: 60px; padding-top: 10px;}
+            .sidebar h2 {display: none;}
+            .main {margin-left: 60px; padding: 20px;}
+            .sidebar a {padding: 12px 8px; font-size: 12px;}
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Admin Menu</h2>
+    <a href="#" onclick="showSection('complaints')">⚠️ Complaints</a>
+    <a href="#" onclick="showSection('feedbacks')">✉️ Feedbacks</a>
+    <a href="#" onclick="showSection('post_notice')">📢 Post Notice</a>
+    <a href="#" onclick="showSection('post_policy')">📄 Post Policy</a>
+    <a href="#" onclick="showSection('post_scheme')">🎯 Post Scheme</a>
+    <a href="#" onclick="showSection('post_job')">💼 Post Job</a>
+    <a href="#" onclick="showSection('post_session')">📚 Post Session</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="main">
+
+    <!-- Complaints -->
+    <div id="complaints" class="section active-section">
+        <h2>⚠️ Complaints</h2>
+        {% for c in complaints %}
+        <div class="card">
+            <b>{{ c.email }}</b>
+            <p>{{ c.message }}</p>
+            <p>Status: <b>{{ c.status }}</b></p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Feedbacks -->
+    <div id="feedbacks" class="section">
+        <h2>✉️ Feedbacks</h2>
+        {% for f in feedbacks %}
+        <div class="card">
+            <b>{{ f.email }}</b>
+            <p>{{ f.message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Post Notice -->
+    <div id="post_notice" class="section">
+        <h2>📢 Post Notice</h2>
+        <form action="/post_notice" method="POST">
+            <input type="text" name="title" placeholder="Title" required>
+            <textarea name="message" placeholder="Message" required></textarea>
+            <button>Post Notice</button>
+        </form>
+    </div>
+
+    <!-- Post Policy -->
+    <div id="post_policy" class="section">
+        <h2>📄 Post Policy</h2>
+        <form action="/post_policy" method="POST">
+            <input type="text" name="title" placeholder="Title" required>
+            <textarea name="content" placeholder="Content" required></textarea>
+            <button>Post Policy</button>
+        </form>
+    </div>
+
+    <!-- Post Scheme -->
+    <div id="post_scheme" class="section">
+        <h2>🎯 Post Scheme</h2>
+        <form action="/post_scheme" method="POST">
+            <input type="text" name="name" placeholder="Scheme Name" required>
+            <textarea name="details" placeholder="Details" required></textarea>
+            <button>Post Scheme</button>
+        </form>
+    </div>
+
+    <!-- Post Job -->
+    <div id="post_job" class="section">
+        <h2>💼 Post Job</h2>
+        <form action="/post_job" method="POST">
+            <input type="text" name="company" placeholder="Company Name" required>
+            <textarea name="description" placeholder="Job Description" required></textarea>
+            <input type="text" name="link" placeholder="Apply Link" required>
+            <select name="disability" required>
+                <option value="all">All</option>
+                <option value="blind">Blind Only</option>
+                <option value="deaf">Deaf Only</option>
+                <option value="physically_disabled">Physically Disabled</option>
+            </select>
+            <button>Post Job</button>
+        </form>
+    </div>
+
+    <!-- Post Session -->
+    <div id="post_session" class="section">
+        <h2>📚 Post Learning Session</h2>
+        <form action="/post_session" method="POST">
+            <input type="text" name="topic" placeholder="Topic Heading" required>
+            <textarea name="description" placeholder="Description" required></textarea>
+            <input type="text" name="ebook" placeholder="Ebook URL / File Link" required>
+            <input type="text" name="resources" placeholder="Free Resources Links (comma separated)">
+            <input type="text" name="youtube" placeholder="YouTube Links (comma separated)">
+            <button>Post Session</button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+function showSection(sectionId){
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+    document.getElementById(sectionId).classList.add('active-section');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- General --- */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f4f6f8;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 220px;
+            background: #1f2937;
+            height: 100vh;
+            position: fixed;
+            color: #fff;
+            padding-top: 20px;
+            transition: width 0.3s;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 15px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+        .sidebar a:hover {
+            background: #374151;
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* --- Main Content --- */
+        .main {
+            margin-left: 220px;
+            padding: 30px;
+        }
+
+        /* --- Sections --- */
+        .section {
+            display: none;
+        }
+
+        .section h2 {
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        /* --- Card Design --- */
+        .card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        /* --- Buttons --- */
+        button, .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #3b82f6;
+            color: #fff;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        button:hover, .btn:hover {
+            background: #2563eb;
+        }
+
+        /* --- Forms --- */
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+        }
+
+        /* --- Links inside cards --- */
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Section Active --- */
+        .active-section {
+            display: block !important;
+        }
+
+        /* --- Small Responsive --- */
+        @media(max-width: 768px){
+            .sidebar {width: 60px; padding-top: 10px;}
+            .sidebar h2 {display: none;}
+            .main {margin-left: 60px; padding: 20px;}
+            .sidebar a {padding: 12px 8px; font-size: 12px;}
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>User Menu</h2>
+    <a href="#" onclick="showSection('notices')">📢 Notices</a>
+    <a href="#" onclick="showSection('jobs')">💼 Jobs</a>
+    <a href="#" onclick="showSection('sessions')">📚 Learning Sessions</a>
+    <a href="#" onclick="showSection('complaint')">⚠️ Complaint</a>
+    <a href="#" onclick="showSection('feedback')">✉️ Feedback</a>
+    <a href="#" onclick="showSection('policies')">📄 Policies</a>
+    <a href="#" onclick="showSection('schemes')">🎯 Schemes</a>
+    <a href="#" onclick="showSection('profile')">👤 Profile</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="main">
+
+    <!-- Notices -->
+    <div id="notices" class="section active-section">
+        <h2>📢 Notices</h2>
+        {% for notice in notices %}
+        <div class="card">
+            <b>{{ notice.title }}</b>
+            <p>{{ notice.message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Jobs -->
+    <div id="jobs" class="section">
+        <h2>💼 Jobs</h2>
+        {% for job in jobs %}
+        <div class="card">
+            <b>{{ job.company }}</b>
+            <p>{{ job.description }}</p>
+            <p><small>Eligible: {{ job.disability }}</small></p>
+            <a href="{{ job.link }}" target="_blank"><button>Apply</button></a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Learning Sessions -->
+    <div id="sessions" class="section">
+        <h2>📚 Learning Sessions</h2>
+        {% for s in sessions %}
+        <div class="card">
+            <h3>{{ s.topic }}</h3>
+            <p>{{ s.description }}</p>
+            <p><b>Ebook:</b> <a href="{{ s.ebook }}" target="_blank">Download</a></p>
+            {% if s.resources %}
+            <p><b>Resources:</b>
+                {% for r in s.resources %}
+                <a href="{{ r }}" target="_blank">{{ r }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            {% endif %}
+            {% if s.youtube %}
+            <p><b>YouTube:</b>
+                {% for y in s.youtube %}
+                <a href="{{ y }}" target="_blank">{{ y }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Complaint -->
+    <div id="complaint" class="section">
+        <h2>⚠️ Submit Complaint</h2>
+        <form action="/add_complaint" method="POST">
+            <textarea name="message" placeholder="Enter complaint" required></textarea>
+            <button>Submit Complaint</button>
+        </form>
+        <h3>Your Complaints History</h3>
+        {% for c in complaints %}
+        <div class="card">
+            <p>{{ c.message }}</p>
+            <p>Status: <b>{{ c.status }}</b></p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Feedback -->
+    <div id="feedback" class="section">
+        <h2>✉️ Submit Feedback</h2>
+        <form action="/add_feedback" method="POST">
+            <textarea name="message" placeholder="Enter feedback" required></textarea>
+            <button>Submit Feedback</button>
+        </form>
+    </div>
+
+    <!-- Policies -->
+    <div id="policies" class="section">
+        <h2>📄 Policies</h2>
+        {% for p in policies %}
+        <div class="card">
+            <b>{{ p.title }}</b>
+            <p>{{ p.content }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Schemes -->
+    <div id="schemes" class="section">
+        <h2>🎯 Schemes</h2>
+        {% for s in schemes %}
+        <div class="card">
+            <b>{{ s.name }}</b>
+            <p>{{ s.details }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Profile -->
+    <div id="profile" class="section">
+        <h2>👤 Profile</h2>
+        <form action="/update_profile" method="POST">
+            <input type="text" name="name" value="{{ user.name }}" required>
+            <input type="number" name="age" value="{{ user.age }}" required>
+            <select name="gender" required>
+                <option value="Male" {% if user.gender=='Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if user.gender=='Female' %}selected{% endif %}>Female</option>
+                <option value="Other" {% if user.gender=='Other' %}selected{% endif %}>Other</option>
+            </select>
+            <input type="email" name="email" value="{{ user.email }}" readonly>
+            <input type="text" name="disability" value="{{ user.disability }}" readonly>
+            <input type="text" name="country" value="{{ user.country }}">
+            <input type="text" name="state" value="{{ user.state }}">
+            <input type="text" name="pincode" value="{{ user.pincode }}">
+            <input type="text" name="phone" value="{{ user.phone }}">
+            <button>Update Profile</button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+function showSection(sectionId){
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+    document.getElementById(sectionId).classList.add('active-section');
+}
+</script>
+
+</body>
+</html>

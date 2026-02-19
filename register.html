@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Registration</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+    }
+
+    .container {
+        background: #fff;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+        width: 400px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .container:hover { transform: translateY(-5px); }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 28px;
+        color: #333;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        background: transparent;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #6a11cb;
+        box-shadow: 0 0 8px rgba(106,17,203,0.2);
+    }
+
+    label {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        pointer-events: none;
+        transition: 0.3s;
+        color: #aaa;
+        font-size: 16px;
+        background: #fff;
+        padding: 0 5px;
+    }
+
+    input:focus + label,
+    input:not(:placeholder-shown) + label,
+    select:focus + label,
+    select:not([value=""]) + label,
+    textarea:focus + label,
+    textarea:not(:placeholder-shown) + label {
+        top: -10px;
+        left: 10px;
+        font-size: 12px;
+        color: #6a11cb;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        background: #6a11cb;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    button:hover { background: #2575fc; }
+
+    .links {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .links a {
+        color: #6a11cb;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .links a:hover {
+        color: #2575fc;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 450px) {
+        .container { width: 90%; padding: 30px 20px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Register</h2>
+    <form action="/register" method="POST">
+        <div class="input-group">
+            <input type="text" name="name" placeholder=" " required>
+            <label>Name</label>
+        </div>
+        <div class="input-group">
+            <input type="number" name="age" placeholder=" " required>
+            <label>Age</label>
+        </div>
+        <div class="input-group">
+            <select name="gender" required>
+                <option value="" disabled selected hidden></option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <label>Gender</label>
+        </div>
+        <div class="input-group">
+            <input type="email" name="email" placeholder=" " required>
+            <label>Email</label>
+        </div>
+        <div class="input-group">
+            <input type="password" name="password" placeholder=" " required>
+            <label>Password</label>
+        </div>
+        <div class="input-group">
+            <select name="disability" required>
+                <option value="" disabled selected hidden></option>
+                <option value="blind">Blind</option>
+                <option value="deaf">Deaf</option>
+                <option value="physically_disabled">Physically Disabled</option>
+                <option value="all">All</option>
+            </select>
+            <label>Disability</label>
+        </div>
+        <div class="input-group">
+            <input type="text" name="country" placeholder=" ">
+            <label>Country</label>
+        </div>
+        <div class="input-group">
+            <input type="text" name="state" placeholder=" ">
+            <label>State</label>
+        </div>
+        <div class="input-group">
+            <input type="text" name="pincode" placeholder=" ">
+            <label>Pincode</label>
+        </div>
+        <div class="input-group">
+            <input type="text" name="phone" placeholder=" ">
+            <label>Phone No.</label>
+        </div>
+        <button>Register</button>
+        <div class="links">
+            <p>Already registered? <a href="/">Login here</a></p>
+        </div>
+    </form>
+</div>
+</body>
+</html>

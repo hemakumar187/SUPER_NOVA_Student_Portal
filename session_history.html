@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session History</title>
+    <style>
+        body{font-family:sans-serif;margin:20px;}
+        .card{border:1px solid #ccc;padding:15px;margin:10px 0;border-radius:5px;}
+        button{padding:6px 12px;margin:2px;border:none;border-radius:4px;color:#fff;cursor:pointer;}
+        .edit{background:#007bff;}
+        .delete{background:red;}
+    </style>
+</head>
+<body>
+<h2>Session History</h2>
+<a href="/admin_dashboard"><button style="background:green;">Back to Dashboard</button></a>
+
+{% for s in sessions %}
+<div class="card">
+    <h3>{{ s.topic }}</h3>
+    <p>{{ s.description }}</p>
+    <p><b>Ebook:</b> <a href="{{ s.ebook }}" target="_blank">Download</a></p>
+    {% if s.resources %}
+    <p><b>Resources:</b>
+        {% for r in s.resources %}
+        <a href="{{ r }}" target="_blank">{{ r }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    {% endif %}
+    {% if s.youtube %}
+    <p><b>YouTube:</b>
+        {% for y in s.youtube %}
+        <a href="{{ y }}" target="_blank">{{ y }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    {% endif %}
+    <a href="/edit_session/{{ s._id }}"><button class="edit">Edit</button></a>
+    <a href="/delete_session/{{ s._id }}"><button class="delete">Delete</button></a>
+</div>
+{% endfor %}
+</body>
+</html>
